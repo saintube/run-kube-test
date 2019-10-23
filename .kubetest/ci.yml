@@ -3,7 +3,7 @@
   connection: local
 
   vars_files:
-    - ./Kube-Test/env.yml
+    - ../Kube-Test/env.yml
 
   vars:
     CHART_PATH: "./charts/"
