@@ -13,8 +13,7 @@ jobs:
           git clone https://github.com/saintube/Kube-Test.git
           cd Kube-Test
           docker build --no-cache . -t "saintube/kube-test:ci"
-          docker login --username saintube
-          ${{ secrets.DOCKER_TOKEN }}
+          docker login -u saintube -p ${{ secrets.DOCKER_TOKEN }}
           docker push saintube/kube-test:ci
         
   build:
