@@ -10,6 +10,8 @@ jobs:
         uses: actions/checkout@master
       - name: Kube Test Action
         uses: saintube/Kube-Test@master
+        with:
+          who-to-greet: 'Mona the Octocat'
         
   build:
 
