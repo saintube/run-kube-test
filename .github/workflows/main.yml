@@ -6,32 +6,9 @@ jobs:
   test_action:
     runs-on: ubuntu-latest
     steps:
+      - name: KinD (Kubernetes in Docker) Action
+        uses: engineerd/setup-kind@v0.1.0
       - name: Checkout
         uses: actions/checkout@master
       - name: Kube Test Action
         uses: saintube/Kube-Test@master
-        with:
-          who-to-greet: 'Good Luck'
-        
-  build:
-
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: KinD (Kubernetes in Docker) Action
-      uses: engineerd/setup-kind@v0.1.0
-    - name: Helm Install
-      run: |
-        export KUBECONFIG="$(kind get kubeconfig-path)"
-        helm init
-        kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
-        sleep 40s
-        kubectl get pods --all-namespaces
-        helm version
-    - name: Testing - Create Deployment
-      run: |
-        export KUBECONFIG="$(kind get kubeconfig-path)"
-        helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
-        helm repo update
-        helm install svc-cat/catalog --name catalog --namespace catalog
-        kubectl get pods --all-namespaces
