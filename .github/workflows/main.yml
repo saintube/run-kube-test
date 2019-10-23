@@ -22,11 +22,8 @@ jobs:
       run: |
         export KUBECONFIG="$(kind get kubeconfig-path)"
         helm init
-        kubectl create serviceaccount --namespace kube-system tiller
-        kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-        kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+        kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
         sleep 40s
-        kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
         kubectl get pods --all-namespaces
         helm version
     - name: Testing - Create Deployment
