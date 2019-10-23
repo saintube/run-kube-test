@@ -2,6 +2,9 @@
 - hosts: localhost
   connection: local
 
+  vars_file:
+    - ./Kube-Test/env.yml
+
   vars:
     CHART_PATH: "./charts/"
 
@@ -26,3 +29,5 @@
           args:
             executable: /bin/bash
 
+  environment:
+    KUBECONFIG: {{ kube_config }}
