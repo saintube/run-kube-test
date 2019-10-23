@@ -8,6 +8,9 @@
   vars:
     CHART_PATH: "./charts/"
 
+  environment:
+    KUBECONFIG: "{{ kube_config }}"
+
   tasks:
     - block:
 
@@ -29,5 +32,3 @@
           args:
             executable: /bin/bash
 
-  environment:
-    KUBECONFIG: {{ kube_config }}
