@@ -8,8 +8,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Kube Test Action
-        uses: saintube/Kube-Test@master
+      - name: Build and Push
+        run: |
+          git clone https://github.com/saintube/Kube-Test.git
+          cd Kube-Test
+          docker build --no-cache . -t "saintube/kube-test:ci"
+          docker login --username saintube
+          ${{ secrets.DOCKER_TOKEN }}
+          docker push saintube/kube-test:ci
         
   build:
 
