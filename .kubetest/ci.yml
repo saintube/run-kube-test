@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
 
-  vars_file:
+  vars_files:
     - ./Kube-Test/env.yml
 
   vars:
