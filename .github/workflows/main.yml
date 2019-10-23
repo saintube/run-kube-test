@@ -3,33 +3,31 @@ name: CI
 on: [push]
 
 jobs:
-  test_action:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Kube Test Action
-        uses: saintube/Kube-Test@master
-        
-#  build:
-
+#  test_action:
 #    runs-on: ubuntu-latest
-    
 #    steps:
-#    - name: KinD (Kubernetes in Docker) Action
-#      uses: engineerd/setup-kind@v0.1.0
-#    - name: Testing - Get Pods
-#      run: |
-#        export KUBECONFIG="$(kind get kubeconfig-path)"
-#        kubectl cluster-info
-#        kubectl get pods -n kube-system
-#    - name: Testing - Create Deployment
-#      run: |
-#        export KUBECONFIG="$(kind get kubeconfig-path)"
-#        kubectl create -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/controllers/nginx-deployment.yaml --record
-#        kubectl get deployments
-#    - name: Testing - Delete Deployment
-#      run: |
-#        export KUBECONFIG="$(kind get kubeconfig-path)"
-#        kubectl delete -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/controllers/nginx-deployment.yaml
-#        kubectl get deployments
+#      - name: Checkout
+#        uses: actions/checkout@master
+#      - name: Kube Test Action
+#        uses: saintube/Kube-Test@master
+        
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: KinD (Kubernetes in Docker) Action
+      uses: engineerd/setup-kind@v0.1.0
+    - name: Helm Install
+      run: |
+        export KUBECONFIG="$(kind get kubeconfig-path)"
+        helm init
+        kubectl create serviceaccount --namespace kube-system tiller
+        kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+        kubectl get pods --all-namespaces
+    - name: Testing - Create Deployment
+      run: |
+        export KUBECONFIG="$(kind get kubeconfig-path)"
+        helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
+        helm install svc-cat/catalog --name catalog --namespace catalog
+        kubectl get pods --all-namespaces
