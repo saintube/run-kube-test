@@ -8,13 +8,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Build and Push
-        run: |
-          git clone https://github.com/saintube/Kube-Test.git
-          cd Kube-Test
-          docker build . --no-cache -t "saintube/kube-test:runner"
-          docker login -u saintube -p ${{ secrets.DOCKER_TOKEN }}
-          docker push saintube/kube-test:runner
+      - name: Kube Test Action
+        uses: saintube/Kube-Test@master
         
 #  build:
 
