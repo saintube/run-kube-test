@@ -15,7 +15,7 @@ jobs:
       - name: Kube Test Action
         uses: saintube/Kube-Test@master
 
-      - name: Get app deploer type
+      - name: Get app deployer type
         run: |
           export KUBECONFIG="$(kind get kubeconfig-path)"
           kubectl get deployment 
