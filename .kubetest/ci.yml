@@ -6,7 +6,7 @@
     - ../Kube-Test/env.yml
 
   vars:
-    CHART_PATH: "./charts/"
+    CHART_PATH: "charts/kubedb"
 
   environment:
     KUBECONFIG: "{{ kube_config }}"
@@ -25,10 +25,29 @@
             echo "hello action!"
           args:
             executable: /bin/bash
-
-        - name: Test Input
-          shell: >
-            echo {{ CHART_PATH }}
+        
+        - name: Create new ns
+          shell: kubectl create ns mysql-operator
           args:
             executable: /bin/bash
 
+        - name: Deploy the app
+          include_tasks: ../Kube-Test/funclib/helm_deployer.yaml
+          vars: 
+            action: "deploy"
+            chart_path: "{{ CHART_PATH }}"
+        
+        - name: Test Pod Faliure
+          include_tasks: ../Kube-Test/experiments/pod-delete.yaml
+          vars:
+            app_ns: "default"
+            app_label: "app=kubedb"
+            deploy_type: "deployment"
+            test_name: "pod-delete"
+            c_duration: "15"
+            c_interval: "5"
+            c_force: "true"
+            setup_script: ""
+            check_script: ""
+            cleanup_script: ""
+            

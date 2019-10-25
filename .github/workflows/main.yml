@@ -6,9 +6,20 @@ jobs:
   test_action:
     runs-on: ubuntu-latest
     steps:
+      # Provision a KinD cluster
       - name: KinD (Kubernetes in Docker) Action
         uses: engineerd/setup-kind@v0.1.0
       - name: Checkout
         uses: actions/checkout@master
+      # Specify our GitHub Action
       - name: Kube Test Action
         uses: saintube/Kube-Test@master
+
+      - name: Get app deploer type
+        run: |
+          export KUBECONFIG="$(kind get kubeconfig-path)"
+          kubectl get deployment 
+          kubectl get pod 
+          kubectl get statefulset
+          pwd
+          ls $GITHUB_WORKSPACE/.kubetest/
