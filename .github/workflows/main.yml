@@ -11,11 +11,3 @@ jobs:
       # Specify our GitHub Action
       - name: Kube Test Action
         uses: saintube/Kube-Test@provision-cluster
-
-      - name: Get app deployer type
-        run: |
-          kubectl get deployment 
-          kubectl get pod 
-          kubectl get statefulset
-          pwd
-          ls $GITHUB_WORKSPACE/.kubetest/
